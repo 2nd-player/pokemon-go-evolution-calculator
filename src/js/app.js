@@ -34,45 +34,107 @@ function PogoCalcController($scope) {
     calculate(val);
   }, true);
 
-  function evolve(calculations, resources) {
+  function evolve(calculations, resources, instructions) {
+    if (instructions[instructions.length-1] &&
+        instructions[instructions.length-1].substring(0, 6) == 'Evolve') {
+      var re = /Evolve (\d*)/;
+      var match = re.exec(instructions[instructions.length-1]);
+      var count = parseInt(match[1], 10) + 1;
+      instructions[instructions.length-1] = 'Evolve ' + count + ' Pidgey.';
+    } else {
+      instructions.push('Evolve 1 Pidgey.');
+    }
+
     calculations.evolutions = calculations.evolutions + 1;
     resources.pidgeys = resources.pidgeys - 1;
     resources.pidgeottos = resources.pidgeottos + 1;
     resources.candy = resources.candy - CANDY_PER_EVOLUTION + 1;
   }
 
-  function generateInstructions(form, calculations) {
+  function transferPidgeotto(calculations, resources, instructions, count) {
+    instructions.push('Transfer ' + count + ' Pidgeotto.');
+    calculations.pidgeottoTransfers = calculations.pidgeottoTransfers + count;
+    resources.pidgeottos = resources.pidgeottos - count;
+    resources.candy = resources.candy + count;
+  }
+
+  function transferPidgey(calculations, resources, instructions, count) {
+    instructions.push('Transfer ' + count + ' Pidgey.');
+    calculations.pidgeyTransfers = calculations.pidgeyTransfers + count;
+    resources.pidgeys = resources.pidgeys - count;
+    resources.candy = resources.candy + count;
+  }
+
+  function calculateEvolutions(calculations, resources, instructions) {
+    var done = false;
+
+    while (!done) {
+      if (resources.pidgeys <= 0 && resources.pidgeys < 13) {
+        done = true;
+      } else if (resources.candy >= CANDY_PER_EVOLUTION) {
+        evolve(calculations, resources, instructions);
+
+      } else if (resources.pidgeottos + resources.candy >= CANDY_PER_EVOLUTION) {
+        var pidgeottoToTransfer = CANDY_PER_EVOLUTION - resources.candy;
+        transferPidgeotto(calculations, resources, instructions, pidgeottoToTransfer);
+
+      } else if (resources.pidgeottos + resources.pidgeys - 1 + resources.candy >= CANDY_PER_EVOLUTION) {
+        transferPidgeotto(calculations, resources, instructions, resources.pidgeottos);
+        var pidgeyToTransfer = CANDY_PER_EVOLUTION - resources.candy;
+        transferPidgey(calculations, resources, instructions, pidgeyToTransfer);
+
+      } else {
+        done = true;
+      }
+    }
+  }
+
+  function calculateInstructions(form, calculations) {
     var instructions = [];
 
-    var preEggPidgeottos = parseInt(form.pidgeotto, 10) - (form.keepPidgeotto ? 1 : 0);
-    preEggPidgeottos = preEggPidgeottos < calculations.pidgeottoTransfers ? preEggPidgeottos : calculations.pidgeottoTransfers;
-    var postEggPidgeottos = calculations.pidgeottoTransfers - parseInt(form.pidgeotto, 10) - (form.keepPidgeotto ? 1 : 0);
-    if (preEggPidgeottos > 0) {
-      instructions.push('Transfer ' + preEggPidgeottos + ' Pidgeottos.');
+    var startingResources = {
+      pidgeys: parseInt(form.pidgey, 10) - (form.keepPidgey ? 1 : 0),
+      pidgeottos: parseInt(form.pidgeotto, 10) - (form.keepPidgeotto ? 1 : 0),
+      candy: parseInt(form.pidgeyCandy, 10),
+    };
+
+    if (startingResources.pidgeys < 0) {
+      startingResources.pidgeys = 0;
+    }
+
+    if (startingResources.pidgeottos < 0) {
+      startingResources.pidgeottos = 0;
+    }
+
+    if (startingResources.candy < 0) {
+      startingResources.candy = 0;
     }
 
     if (calculations.pidgeyTransfers > 0) {
-      instructions.push('Transfer ' + calculations.pidgeyTransfers + ' Pidgeys.');
+      startingResources.pidgeys -= calculations.pidgeyTransfers;
+      startingResources.candy += calculations.pidgeyTransfers;
+      instructions.push('Transfer ' + calculations.pidgeyTransfers + ' Pidgey.')
     }
 
-    if (calculations.evolutions > 0) {
-      instructions.push('Activate Lucky Egg.');
-    } else {
-      instructions.push('You can\'t evolve any Pidgeys.');
+    if (calculations.pidgeottoTransfers > 0 && startingResources.pidgeottos > 0) {
+      var pidgeottoToTransfer = Math.min(calculations.pidgeottoTransfers, startingResources.pidgeottos);
+      startingResources.pidgeottos -= pidgeottoToTransfer;
+      startingResources.candy += pidgeottoToTransfer;
+      instructions.push('Transfer ' + pidgeottoToTransfer + ' Pidgeotto.')
     }
 
-    var preTransferEvolutions = calculations.evolutions - Math.ceil(postEggPidgeottos / 12);
-    if (preTransferEvolutions > 0) {
-      instructions.push('Evolve ' + preTransferEvolutions + ' Pidgeys.');
-    }
+    instructions.push('Activate Lucky Egg.');
 
-    if (postEggPidgeottos > 0) {
-      instructions.push('Transfer ' + postEggPidgeottos + ' Pidgeottos.');
-    }
+    var instructionCalculations = {
+      evolutions: 0,
+      pidgeyTransfers: 0,
+      pidgeottoTransfers: 0
+    };
 
-    var postTransferEvolutions = calculations.evolutions - preTransferEvolutions;
-    if (postTransferEvolutions > 0) {
-      instructions.push('Evolve ' + postTransferEvolutions + ' Pidgeys.');
+    calculateEvolutions(instructionCalculations, startingResources, instructions);
+
+    if (instructions.length == 1) {
+      instructions[0] = 'Catch more Pidgey.';
     }
 
     $scope.instructions = instructions;
@@ -103,35 +165,9 @@ function PogoCalcController($scope) {
       resources.candy = 0;
     }
 
-    var done = false;
+    var instructions = [];
 
-    while (!done) {
-      if (resources.pidgeys <= 0 && resources.pidgeys < 13) {
-        done = true;
-      } else if (resources.candy >= CANDY_PER_EVOLUTION) {
-        evolve(calculations, resources);
-
-      } else if (resources.pidgeottos + resources.candy >= CANDY_PER_EVOLUTION) {
-        var pidgeottoToTransfer = CANDY_PER_EVOLUTION - resources.candy;
-        calculations.pidgeottoTransfers = calculations.pidgeottoTransfers + pidgeottoToTransfer;
-        resources.pidgeottos = resources.pidgeottos - pidgeottoToTransfer;
-        resources.candy = resources.candy + pidgeottoToTransfer;
-        evolve(calculations, resources);
-
-      } else if (resources.pidgeottos + resources.pidgeys - 1 + resources.candy >= CANDY_PER_EVOLUTION) {
-        calculations.pidgeottoTransfers = calculations.pidgeottoTransfers + resources.pidgeottos;
-        resources.candy = resources.candy + resources.pidgeottos;
-        resources.pidgeottos = 0;
-        var pidgeyToTransfer = CANDY_PER_EVOLUTION - resources.candy;
-        calculations.pidgeyTransfers = calculations.pidgeyTransfers + pidgeyToTransfer;
-        resources.pidgeys = resources.pidgeys - pidgeyToTransfer;
-        resources.candy = resources.candy + pidgeyToTransfer;
-        evolve(calculations, resources);
-
-      } else {
-        done = true;
-      }
-    }
+    calculateEvolutions(calculations, resources, instructions);
 
     resources.pidgeys = resources.pidgeys + (form.keepPidgey ? 1 : 0);
     resources.pidgeottos = resources.pidgeottos + (form.keepPidgeotto ? 1 : 0);
@@ -139,6 +175,6 @@ function PogoCalcController($scope) {
     $scope.calculations = calculations;
     $scope.resources = resources;
 
-    generateInstructions(form, calculations);
+    calculateInstructions(form, calculations);
   }
 }
