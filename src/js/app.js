@@ -34,6 +34,28 @@ function PogoCalcController($scope) {
     calculate(val);
   }, true);
 
+  function parseResources(form) {
+    var resources = {
+      pidgeys: parseInt(form.pidgey, 10) - (form.keepPidgey ? 1 : 0),
+      pidgeottos: parseInt(form.pidgeotto, 10) - (form.keepPidgeotto ? 1 : 0),
+      candy: parseInt(form.pidgeyCandy, 10)
+    };
+
+    if (resources.pidgeys < 0 || isNaN(resources.pidgeys)) {
+      resources.pidgeys = 0;
+    }
+
+    if (resources.pidgeottos < 0 || isNaN(resources.pidgeottos)) {
+      resources.pidgeottos = 0;
+    }
+
+    if (resources.candy < 0 || isNaN(resources.candy)) {
+      resources.candy = 0;
+    }
+
+    return resources;
+  }
+
   function evolve(calculations, resources, instructions) {
     if (instructions[instructions.length-1] &&
         instructions[instructions.length-1].substring(0, 6) == 'Evolve') {
@@ -92,23 +114,7 @@ function PogoCalcController($scope) {
   function calculateInstructions(form, calculations) {
     var instructions = [];
 
-    var startingResources = {
-      pidgeys: parseInt(form.pidgey, 10) - (form.keepPidgey ? 1 : 0),
-      pidgeottos: parseInt(form.pidgeotto, 10) - (form.keepPidgeotto ? 1 : 0),
-      candy: parseInt(form.pidgeyCandy, 10),
-    };
-
-    if (startingResources.pidgeys < 0) {
-      startingResources.pidgeys = 0;
-    }
-
-    if (startingResources.pidgeottos < 0) {
-      startingResources.pidgeottos = 0;
-    }
-
-    if (startingResources.candy < 0) {
-      startingResources.candy = 0;
-    }
+    var startingResources = parseResources(form);
 
     if (calculations.pidgeyTransfers > 0) {
       startingResources.pidgeys -= calculations.pidgeyTransfers;
@@ -147,23 +153,7 @@ function PogoCalcController($scope) {
       pidgeottoTransfers: 0
     };
 
-    var resources = {
-      pidgeys: parseInt(form.pidgey, 10) - (form.keepPidgey ? 1 : 0),
-      pidgeottos: parseInt(form.pidgeotto, 10) - (form.keepPidgeotto ? 1 : 0),
-      candy: parseInt(form.pidgeyCandy, 10)
-    };
-
-    if (resources.pidgeys < 0) {
-      resources.pidgeys = 0;
-    }
-
-    if (resources.pidgeottos < 0) {
-      resources.pidgeottos = 0;
-    }
-
-    if (resources.candy < 0) {
-      resources.candy = 0;
-    }
+    var resources = parseResources(form);
 
     var instructions = [];
 
