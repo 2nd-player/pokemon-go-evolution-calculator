@@ -21,6 +21,7 @@ app.controller('PogoCalcController', ['$scope', PogoCalcController]);
 
 function PogoCalcController($scope) {
   var CANDY_PER_EVOLUTION = 12;
+  var CANDY_PER_CATCH = 3;
 
   $scope.form = {
     pidgey: 1,
@@ -111,6 +112,62 @@ function PogoCalcController($scope) {
     }
   }
 
+  function oneEvolution(form)
+  {
+    var toCatch = 0;
+    var resources = parseResources(form);
+
+    while (true) {
+      var calculations = {
+        evolutions: 0,
+        pidgeyTransfers: 0,
+        pidgeottoTransfers: 0
+      };
+
+      var resources = parseResources(form);
+      resources.pidgeys += toCatch;
+      resources.candy += toCatch * CANDY_PER_CATCH;
+
+      var instructions = [];
+
+      calculateEvolutions(calculations, resources, instructions);
+
+      if (calculations.evolutions > 0) {
+        return toCatch;
+      } else {
+        toCatch++;
+      }
+    }
+  }
+
+  function minimizeCandy(form)
+  {
+    var toCatch = 0;
+    var resources = parseResources(form);
+
+    while (true) {
+      var calculations = {
+        evolutions: 0,
+        pidgeyTransfers: 0,
+        pidgeottoTransfers: 0
+      };
+
+      var resources = parseResources(form);
+      resources.pidgeys += toCatch;
+      resources.candy += toCatch * CANDY_PER_CATCH;
+
+      var instructions = [];
+
+      calculateEvolutions(calculations, resources, instructions);
+
+      if (resources.candy <= 1) {
+        return toCatch;
+      } else {
+        toCatch++;
+      }
+    }
+  }
+
   function calculateInstructions(form, calculations) {
     var instructions = [];
 
@@ -140,7 +197,8 @@ function PogoCalcController($scope) {
     calculateEvolutions(instructionCalculations, startingResources, instructions);
 
     if (instructions.length == 1) {
-      instructions[0] = 'Catch more Pidgey.';
+      var pidgeyToCatch = oneEvolution(form);
+      instructions[0] = 'Catch ' + pidgeyToCatch + ' more Pidgey.';
     }
 
     $scope.instructions = instructions;
@@ -161,6 +219,8 @@ function PogoCalcController($scope) {
 
     resources.pidgeys = resources.pidgeys + (form.keepPidgey ? 1 : 0);
     resources.pidgeottos = resources.pidgeottos + (form.keepPidgeotto ? 1 : 0);
+
+    calculations.pidgeyToCatch = minimizeCandy(form);
 
     $scope.calculations = calculations;
     $scope.resources = resources;
