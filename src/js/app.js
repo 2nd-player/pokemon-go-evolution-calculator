@@ -41,15 +41,15 @@ function PogoCalcController($scope) {
       candy: parseInt(form.pidgeyCandy, 10)
     };
 
-    if (resources.pidgeys < 0 || isNaN(form.pidgeys)) {
+    if (resources.pidgeys < 0 || isNaN(resources.pidgeys)) {
       resources.pidgeys = 0;
     }
 
-    if (resources.pidgeottos < 0 || isNaN(form.pidgeottos)) {
+    if (resources.pidgeottos < 0 || isNaN(resources.pidgeottos)) {
       resources.pidgeottos = 0;
     }
 
-    if (resources.candy < 0 || isNaN(form.candy)) {
+    if (resources.candy < 0 || isNaN(resources.candy)) {
       resources.candy = 0;
     }
 
