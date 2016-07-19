@@ -142,29 +142,35 @@ function PogoCalcController($scope) {
 
   function minimizeCandy(form)
   {
-    var toCatch = 0;
     var resources = parseResources(form);
 
-    while (true) {
-      var calculations = {
-        evolutions: 0,
-        pidgeyTransfers: 0,
-        pidgeottoTransfers: 0
-      };
+    if (resources.candy <= 5000) {
+      var toCatch = 0;
 
-      var resources = parseResources(form);
-      resources.pidgeys += toCatch;
-      resources.candy += toCatch * CANDY_PER_CATCH;
+      while (true) {
+        var calculations = {
+          evolutions: 0,
+          pidgeyTransfers: 0,
+          pidgeottoTransfers: 0
+        };
 
-      var instructions = [];
+        var resources = parseResources(form);
+        resources.pidgeys += toCatch;
+        resources.candy += toCatch * CANDY_PER_CATCH;
 
-      calculateEvolutions(calculations, resources, instructions);
+        var instructions = [];
 
-      if (resources.candy <= 1) {
-        return toCatch;
-      } else {
-        toCatch++;
+        calculateEvolutions(calculations, resources, instructions);
+
+        if (resources.candy <= 1) {
+          return toCatch;
+        } else {
+          toCatch++;
+        }
       }
+    }
+    else {
+      return 'N/A';
     }
   }
 
