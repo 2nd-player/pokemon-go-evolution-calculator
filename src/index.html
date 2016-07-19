@@ -97,7 +97,7 @@ along with PogoCalc.  If not, see <http://www.gnu.org/licenses/>.
         </div>
         <div class="panel-body">
           <ol>
-            <li ng-repeat="instruction in instructions">{{instruction}}</li>
+            <li ng-repeat="instruction in instructions track by $index">{{instruction}}</li>
           </ol>
         </div>
       </div>
