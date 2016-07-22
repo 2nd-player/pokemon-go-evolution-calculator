@@ -20,7 +20,8 @@ along with Pokemon Go Evolution Calculator.  If not, see <http://www.gnu.org/lic
 <meta name="theme-color" content="#e95420" />
 <html>
 <head>
-  <title>Pokemon Go Pidgey Evolution Calculator</title>
+  <meta charset="UTF-8" />
+  <title>Pokémon Go ポッポ計算機</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <script src="js/angular.min.js"></script>
   <script src="js/app.js"></script>
@@ -30,7 +31,7 @@ along with Pokemon Go Evolution Calculator.  If not, see <http://www.gnu.org/lic
   <div class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand">Pokemon Go Pidgey Evolution Calculator</a>
+        <a class="navbar-brand">Pokémon Go ポッポ計算機</a>
       </div>
     </div>
   </div>
@@ -42,17 +43,17 @@ along with Pokemon Go Evolution Calculator.  If not, see <http://www.gnu.org/lic
         </div>
         <div class="panel-body">
           <div class="form-group">
-            <label>Pidgey Count</label>
-            <span class="text-muted pull-right"><input type="checkbox" ng-model="form.keepPidgey">&nbsp;Keep a Pidgey</span>
+            <label>ポッポ数</label>
+            <span class="text-muted pull-right"><input type="checkbox" ng-model="form.keepPidgey">&nbsp;ポッポを1匹残す</span>
             <input type="number" class="form-control" id="pidgeys" ng-model="form.pidgey">
           </div>
           <div class="form-group">
-            <label>Pidgeotto Count</label>
-            <span class="text-muted pull-right"><input type="checkbox" ng-model="form.keepPidgeotto">&nbsp;Keep a Pidgeotto</span>
+            <label>ピジョン数</label>
+            <span class="text-muted pull-right"><input type="checkbox" ng-model="form.keepPidgeotto">&nbsp;ピジョンを1匹残す</span>
             <input type="number" class="form-control" id="pidgeottos" ng-model="form.pidgeotto">
           </div>
           <div class="form-group">
-            <label>Pidgey Candy</label>
+            <label>ポッポのアメ</label>
             <input type="number" class="form-control" id="pidgeyCandy" ng-model="form.pidgeyCandy">
           </div>
         </div>
@@ -61,35 +62,35 @@ along with Pokemon Go Evolution Calculator.  If not, see <http://www.gnu.org/lic
     <div class="col-lg-4 col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          Results
+          計算結果
         </div>
         <table class="table table-bordered table-condensed">
           <tr>
-            <td>Evolutions</td>
+            <td>進化</td>
             <td>{{calculations.evolutions}}</td>
           </tr>
           <tr>
-            <td>Pidgey transfers</td>
+            <td>ポッポ転送数</td>
             <td>{{calculations.pidgeyTransfers}}</td>
           </tr>
           <tr>
-            <td>Pidgeotto transfers</td>
+            <td>ピジョン転送数</td>
             <td>{{calculations.pidgeottoTransfers}}</td>
           </tr>
           <tr>
-            <td>Pidgey left</td>
+            <td>残りポッポ</td>
             <td>{{resources.pidgeys}}</td>
           </tr>
           <tr>
-            <td>Pidgeotto left</td>
+            <td>残りピジョン</td>
             <td>{{resources.pidgeottos}}</td>
           </tr>
           <tr>
-            <td>Candy left</td>
+            <td>残りアメ</td>
             <td>{{resources.candy}}</td>
           </tr>
           <tr>
-            <td>Pidgey to catch to use all candy</td>
+            <td>全てのアメを使いきるために必要なポッポ</td>
             <td>{{calculations.pidgeyToCatch}}</td>
           </tr>
         </table>
@@ -98,7 +99,7 @@ along with Pokemon Go Evolution Calculator.  If not, see <http://www.gnu.org/lic
     <div class="col-lg-4 col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          Instructions
+          説明
         </div>
         <div class="panel-body">
           <ol>
@@ -114,14 +115,14 @@ along with Pokemon Go Evolution Calculator.  If not, see <http://www.gnu.org/lic
           About
         </div>
         <div class="panel-body">
-          <p>This is a tool to calculate how many Pidgeys and Pidgeottos to transfer before activating a Lucky Egg. This will minimize the amout of transferring done for the duration of the Lucky Egg.</p>
+          <p>これは、しあわせタマゴを使用する前にどれだけのポッポとピジョンを転送するべきか計算するツールです. これによりしあわせタマゴの効果時間内に行う転送の量を最小化することができます.</p>
         </div>
       </div>
     </div> -->
   </div>
   <footer class="footer">
     <div class="container">
-        <p class="text-muted">Pokemon Go Evolution Calculator released under <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GNU GPL v3</a>. See the source code on <a href="https://github.com/dankirkham/pogocalc">GitHub</a>.</p>
+        <p class="text-muted">このポッポ計算機は <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GNU GPL v3</a> の下に公開されています. ソースコードは <a href="https://github.com/2nd-player/pokemon-go-evolution-calculator">GitHub</a> で見ることができます.</p>
       </div>
   </footer>
 </body>
