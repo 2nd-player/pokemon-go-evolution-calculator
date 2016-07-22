@@ -1,5 +1,5 @@
-# Pokemon Go Evolution Calculator
-Pokemon Go Evolution Calculator is a web-based calculator written in JavaScript and HTML using AngularJS and Bootstrap. Click [here](http://d4n.nl/pogocalc) to see this calculator in action.
+# Pokemon Go ポッポ計算機
+Pokemon Go ポッポ計算機は AngularJS および Bootstrap を使用して JavaScript で実装されたweb上で使用できる計算ツールです. 使ってみるには [ここ](http://d4n.nl/pogocalc) をクリックしてください (英語版です).
 
-## Details for Pokemon Go Players
-Pokemon Go Evolution Calculator is a tool used to calculate how many Pidgeys and Pidgeottos to transfer before activating a Lucky Egg. This will minimize the amout of transferring done for the duration of the Lucky Egg.
+## 詳細
+Pokemon Go ポッポ計算機はしあわせタマゴを使用する前にどれだけのポッポとピジョンを転送するべきか計算するツールです. これによりしあわせタマゴの効果時間内に行う転送の量を最小化することができます.
