@@ -1,5 +1,5 @@
 # Pokemon Go ポッポ計算機
-Pokemon Go ポッポ計算機は AngularJS および Bootstrap を使用して JavaScript で実装されたweb上で使用できる計算ツールです. 使ってみるには [ここ](http://d4n.nl/pogocalc) をクリックしてください (英語版です).
+Pokemon Go ポッポ計算機は AngularJS および Bootstrap を使用して JavaScript で実装されたweb上で使用できる計算ツールです. 使ってみるには [ここ](http://pokemonwiki.com/calculate/pokemongo_pidgey/) をクリックしてください.
 
 ## 詳細
 Pokemon GO におけるもっとも効率の良い経験値の稼ぎ方は, 必要なアメの数が少ないポケモンをたくさん捕まえて, しあわせタマゴの使用中に進化させることだと言われています. 進化に必要なアメの数はポケモンの種類によって決まっており, もっとも少ないのはポッポ系統・キャタピー系統・ビードル系統です.
