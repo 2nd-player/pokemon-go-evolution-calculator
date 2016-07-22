@@ -63,9 +63,9 @@ function PogoCalcController($scope) {
       var re = /Evolve (\d*)/;
       var match = re.exec(instructions[instructions.length-1]);
       var count = parseInt(match[1], 10) + 1;
-      instructions[instructions.length-1] = 'Evolve ' + count + ' Pidgey.';
+      instructions[instructions.length-1] = 'ポッポを ' + count + ' 匹進化させる.';
     } else {
-      instructions.push('Evolve 1 Pidgey.');
+      instructions.push('ポッポを 1 匹進化させる.');
     }
 
     calculations.evolutions = calculations.evolutions + 1;
@@ -75,14 +75,14 @@ function PogoCalcController($scope) {
   }
 
   function transferPidgeotto(calculations, resources, instructions, count) {
-    instructions.push('Transfer ' + count + ' Pidgeotto.');
+    instructions.push('ピジョンを ' + count + ' 匹転送する.');
     calculations.pidgeottoTransfers = calculations.pidgeottoTransfers + count;
     resources.pidgeottos = resources.pidgeottos - count;
     resources.candy = resources.candy + count;
   }
 
   function transferPidgey(calculations, resources, instructions, count) {
-    instructions.push('Transfer ' + count + ' Pidgey.');
+    instructions.push('ポッポを ' + count + ' 匹転送する.');
     calculations.pidgeyTransfers = calculations.pidgeyTransfers + count;
     resources.pidgeys = resources.pidgeys - count;
     resources.candy = resources.candy + count;
@@ -182,17 +182,17 @@ function PogoCalcController($scope) {
     if (calculations.pidgeyTransfers > 0) {
       startingResources.pidgeys -= calculations.pidgeyTransfers;
       startingResources.candy += calculations.pidgeyTransfers;
-      instructions.push('Transfer ' + calculations.pidgeyTransfers + ' Pidgey.')
+      instructions.push('ポッポを ' + calculations.pidgeyTransfers + ' 匹転送する.')
     }
 
     if (calculations.pidgeottoTransfers > 0 && startingResources.pidgeottos > 0) {
       var pidgeottoToTransfer = Math.min(calculations.pidgeottoTransfers, startingResources.pidgeottos);
       startingResources.pidgeottos -= pidgeottoToTransfer;
       startingResources.candy += pidgeottoToTransfer;
-      instructions.push('Transfer ' + pidgeottoToTransfer + ' Pidgeotto.')
+      instructions.push('ピジョンを ' + pidgeottoToTransfer + ' 匹転送する.')
     }
 
-    instructions.push('Activate Lucky Egg.');
+    instructions.push('しあわせタマゴを使う.');
 
     var instructionCalculations = {
       evolutions: 0,
@@ -204,7 +204,7 @@ function PogoCalcController($scope) {
 
     if (instructions.length == 1) {
       var pidgeyToCatch = oneEvolution(form);
-      instructions[0] = 'Catch ' + pidgeyToCatch + ' more Pidgey.';
+      instructions[0] = 'ポッポを あと ' + pidgeyToCatch + ' 匹捕まえる.';
     }
 
     $scope.instructions = instructions;
